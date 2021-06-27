@@ -1,7 +1,8 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require("electron");
-const path = require("path");
-const glob = require("glob");
+const { app, BrowserWindow } = require('electron');
+const path = require('path');
+const glob = require('glob');
+const printServer = require('./src/main/printer');
 
 function createWindow() {
   // Create the browser window.
@@ -9,7 +10,7 @@ function createWindow() {
     width: 1080,
     height: 720,
     webPreferences: {
-      preload: path.join(__dirname, "preload.ts"),
+      preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -20,13 +21,13 @@ function createWindow() {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile("../public/index.html");
+  mainWindow.loadFile('../public/index.html');
 
   // 작업표시줄 아이콘에 작은 이미지 띄워줄때 (디스코드 빨간불 느낌)
-  mainWindow.setOverlayIcon("./huiIcon.png", "Description for overlay");
+  // mainWindow.setOverlayIcon('./huiIcon.png', 'Description for overlay');
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools();
 
   // Modal window 부모 윈도우 비활성화하면서 모달 띄움
   // let child = new BrowserWindow({
@@ -46,8 +47,8 @@ function createWindow() {
 app.whenReady().then(() => {
   loadMainProcessFiles();
   createWindow();
-
-  app.on("activate", function () {
+  printServer();
+  app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -57,16 +58,16 @@ app.whenReady().then(() => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on("window-all-closed", function () {
-  if (process.platform !== "darwin") app.quit();
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit();
 });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-// Require each JS file in the main-process dir
+// Require each jS file in the main-process dir
 function loadMainProcessFiles() {
-  const files = glob.sync(path.join(__dirname, "/src/main/*.ts"));
+  const files = glob.sync(path.join(__dirname, '/src/main/*.js'));
   files.forEach((file: string) => {
     require(file);
   });
