@@ -1,12 +1,13 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+import { app, BrowserWindow, Menu, Tray } from 'electron';
 const glob = require('glob');
+const path = require('path');
 const printServer = require('./src/main/printer');
 
+let mainWindow: BrowserWindow;
 function createWindow() {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1080,
     height: 720,
     webPreferences: {
@@ -16,7 +17,7 @@ function createWindow() {
     },
     // 상단 메뉴바 숨기기, Alt 누르면 나타남
     autoHideMenuBar: true,
-    // 작업표시줄에 아이콘 안뜨게
+    // 작업표시줄에 아이콘 안뜨게 = true
     skipTaskbar: false,
   });
 
@@ -47,6 +48,7 @@ function createWindow() {
 app.whenReady().then(() => {
   loadMainProcessFiles();
   createWindow();
+  initialTray();
   printServer();
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -64,6 +66,29 @@ app.on('window-all-closed', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+function initialTray() {
+  let tray: any = null;
+  tray = new Tray('./huiIcon.png');
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Tray Icon 숨기기',
+      // click시 tray icon 숨김
+      click: () => {
+        tray.destroy();
+      },
+    },
+    {
+      label: 'webContents.send 테스트',
+      click: () => {
+        mainWindow.webContents.send('hi', 'asdasd');
+      },
+    },
+    { label: 'Item3' },
+    { label: 'Item4' },
+  ]);
+  tray.setToolTip('Ipp-printer');
+  tray.setContextMenu(contextMenu);
+}
 
 // Require each jS file in the main-process dir
 function loadMainProcessFiles() {
@@ -72,3 +97,5 @@ function loadMainProcessFiles() {
     require(file);
   });
 }
+
+export { mainWindow };
