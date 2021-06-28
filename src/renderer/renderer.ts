@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron');
+
 // notification (아이콘 있는 알림)
 const notification = {
   title: 'Electron Tutorial!',
@@ -7,7 +8,6 @@ const notification = {
 };
 
 const notificationButton = document.getElementById('notificationBtn');
-
 notificationButton!.addEventListener('click', () => {
   const myNotification = new window.Notification(notification.title, notification);
 
@@ -22,11 +22,9 @@ jobInfoBtn!.addEventListener('click', () => {
   console.log('request Job Info');
 });
 
+// Job 정보 불러와서 렌더링
 ipcRenderer.on('responseJobInfo', (e: any, data: any) => {
   const jobInfoRendering = document.querySelector('#jobInfoRendering');
   jobInfoRendering!.innerHTML = data;
   console.log(data);
 });
-
-// default send
-ipcRenderer.send('defaultSendToGetJobInfo');

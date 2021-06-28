@@ -1,9 +1,9 @@
+import { ipcMain } from 'electron';
+import { mainWindow } from '../../main';
 const fs = require('fs');
 const rc = require('rc');
 const url = require('url');
-const http = require('http');
 const IppPrinter = require('ipp-printer');
-import { ipcMain } from 'electron';
 
 // interface를 뜻하는 I 붙여줌 변수에
 interface IQueue {
@@ -36,27 +36,25 @@ module.exports = () => {
     );
   });
 
-  ipcMain.on('defaultSendToGetJobInfo', (e: any) => {
-    // When Print Job Comes
-    printer.on('job', function (job: any) {
-      console.log(job);
-      console.log('[job %d] Printing document: %s', job.id, job.name);
-      let filename = 'job-' + job.id + '.prn';
+  // When Print Job Comes
+  printer.on('job', function (job: any) {
+    console.log(job);
+    console.log('[job %d] Printing document: %s', job.id, job.name);
+    let filename = 'job-' + job.id + '.prn';
 
-      job.pipe(fs.createWriteStream(filename)).on('finish', function () {
-        let filepath = 'temp/' + filename;
-        console.log('printed:', filename);
-        let job_item = {
-          job_id: job.id,
-          doc_name: job.name,
-          file_path: filepath,
-          page_cnt: 1,
-          timestamp: job.completedAt,
-        };
-        queue.push(job_item);
-        console.log(queue);
-        e.sender.send('responseJobInfo', queue);
-      });
+    job.pipe(fs.createWriteStream(filename)).on('finish', function () {
+      let filepath = 'temp/' + filename;
+      console.log('printed:', filename);
+      let job_item = {
+        job_id: job.id,
+        doc_name: job.name,
+        file_path: filepath,
+        page_cnt: 1,
+        timestamp: job.completedAt,
+      };
+      queue.push(job_item);
+      console.log(queue);
+      mainWindow.webContents.send('responseJobInfo', queue);
     });
   });
 
