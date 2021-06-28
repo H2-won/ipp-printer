@@ -78,10 +78,7 @@ function initialTray() {
       },
     },
     {
-      label: 'webContents.send 테스트',
-      click: () => {
-        mainWindow.webContents.send('hi', 'asdasd');
-      },
+      label: 'Item2',
     },
     { label: 'Item3' },
     { label: 'Item4' },

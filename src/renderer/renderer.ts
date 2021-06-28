@@ -24,7 +24,17 @@ jobInfoBtn!.addEventListener('click', () => {
 
 // Job 정보 불러와서 렌더링
 ipcRenderer.on('responseJobInfo', (e: any, data: any) => {
-  const jobInfoRendering = document.querySelector('#jobInfoRendering');
-  jobInfoRendering!.innerHTML = data;
+  const Container: any = document.getElementById('jobInfoContainer');
+  const jobInfo = document.createElement('div');
+  const jobId = document.createElement('span');
+  const jobName = document.createElement('span');
+  const jobTime = document.createElement('span');
+  jobId.innerText = 'ID : ' + data.job_id;
+  jobName.innerText = 'NAME : ' + data.doc_name;
+  jobTime.innerText = 'TIME : ' + data.timestamp;
+
+  jobInfo.append(jobId, jobName, jobTime);
+  Container.appendChild(jobInfo);
+
   console.log(data);
 });

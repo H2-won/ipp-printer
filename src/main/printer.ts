@@ -38,7 +38,7 @@ module.exports = () => {
 
   // When Print Job Comes
   printer.on('job', function (job: any) {
-    console.log(job);
+    // console.log(job);
     console.log('[job %d] Printing document: %s', job.id, job.name);
     let filename = 'job-' + job.id + '.prn';
 
@@ -52,9 +52,9 @@ module.exports = () => {
         page_cnt: 1,
         timestamp: job.completedAt,
       };
+      mainWindow.webContents.send('responseJobInfo', job_item);
       queue.push(job_item);
       console.log(queue);
-      mainWindow.webContents.send('responseJobInfo', queue);
     });
   });
 
