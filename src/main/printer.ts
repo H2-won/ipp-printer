@@ -73,24 +73,26 @@ module.exports = () => {
         console.log(`readable: ${printFile.read()}`);
       });
       printFile.on('end', () => {
-        console.log('print File');
+        console.log('in print File');
         const formData: any = new FormData();
         formData.append('file', printFile);
+        // console.log(formData);
 
         axios
-          .post('http://192.168.31.19:80', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+          .post('http://192.168.31.19:8081', formData, {
+            headers: {},
           })
           .then((res: any) => console.log(res))
           .catch((err: any) => console.log(err));
 
-        // fetch('http://192.168.31.19:80', {
+        // fetch('http://192.168.31.19:8081', {
         //   method: 'POST',
         //   headers: {},
         //   body: formData,
-        // }).then((res: any) => console.log(res));
+        // })
+        //   .then((res: any) => console.log(res))
+        //   .catch((err: any) => console.log(err));
 
-        // console.log(formData);
         // const reqConfig = {
         //   method: 'POST',
         //   url: 'http://192.168.31.19:80',
