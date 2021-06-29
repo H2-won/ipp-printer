@@ -16,12 +16,6 @@ notificationButton!.addEventListener('click', () => {
   };
 });
 
-const jobInfoBtn = document.querySelector('#jobInfoBtn');
-jobInfoBtn!.addEventListener('click', () => {
-  ipcRenderer.send('requestJobInfo');
-  console.log('request Job Info');
-});
-
 // Job 정보 불러와서 렌더링
 ipcRenderer.on('responseJobInfo', (e: any, data: any) => {
   const Container: any = document.getElementById('jobInfoContainer');

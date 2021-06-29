@@ -61,13 +61,14 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', function () {
+  tray.destroy();
   if (process.platform !== 'darwin') app.quit();
 });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+let tray: any = null;
 function initialTray() {
-  let tray: any = null;
   tray = new Tray('./huiIcon.png');
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -79,9 +80,22 @@ function initialTray() {
     },
     {
       label: 'Item2',
+      click: () => {
+        console.log('Item2 clicked');
+      },
     },
-    { label: 'Item3' },
-    { label: 'Item4' },
+    {
+      label: 'Item3',
+      click: () => {
+        console.log('Item3 clicked');
+      },
+    },
+    {
+      label: 'Item4',
+      click: () => {
+        console.log('Item4 clicked');
+      },
+    },
   ]);
   tray.setToolTip('Ipp-printer');
   tray.setContextMenu(contextMenu);
