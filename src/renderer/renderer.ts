@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron');
+const axios = require('axios');
 
 // notification (아이콘 있는 알림)
 const notification = {
@@ -31,4 +32,19 @@ ipcRenderer.on('responseJobInfo', (e: any, data: any) => {
   Container.appendChild(jobInfo);
 
   console.log(data);
+});
+
+const getJobListBtn = document.getElementById('getJobListBtn');
+getJobListBtn!.addEventListener('click', () => {
+  fetch('http://localhost:3000/api/jobList', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log('res :', res);
+    });
+  // const jobList = axios.get('http://localhost:3000/api/jobList');
 });

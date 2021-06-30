@@ -1,10 +1,13 @@
 import { ipcMain } from 'electron';
 import { mainWindow } from '../../main';
-const fs = require('fs');
-const rc = require('rc');
-const url = require('url');
-const IppPrinter = require('ipp-printer');
-const net = require('net');
+const fs = require('fs'),
+  rc = require('rc'),
+  url = require('url'),
+  IppPrinter = require('ipp-printer'),
+  net = require('net'),
+  express = require('express'),
+  app = express(),
+  port = 3000;
 
 // interface를 뜻하는 I 붙여줌 변수에
 interface IQueue {
@@ -55,7 +58,7 @@ module.exports = () => {
       };
       mainWindow.webContents.send('responseJobInfo', job_item);
       queue.push(job_item);
-      console.log('***********************queue************************\n', queue);
+      // console.log('***********************queue************************\n', queue);
       // console.log('Printer.jobs === ', printer.jobs);
       print_action(job_item);
     });
@@ -68,20 +71,19 @@ module.exports = () => {
       if (err) throw err;
 
       // 프린터기로 전송
-      writeData(boba, data);
+      // writeData(boba, data);
 
       // 프린터기로 전송한뒤 job리스트에서 프린트한 job 제외
-      const idx = queue.findIndex(function (item: IQueue) {
-        return item.job_id == dtmp.job_id;
-      }); // findIndex = find + indexOf
-      if (idx > -1) queue.splice(idx, 1);
+      // const idx = queue.findIndex(function (item: IQueue) {
+      //   return item.job_id == dtmp.job_id;
+      // }); // findIndex = find + indexOf
+      // if (idx > -1) queue.splice(idx, 1);
 
       // 프린터기 disconnect
       boba.end();
     });
     // createWriteStream으로 생성된 .prn 파일 unlink
     fs.unlinkSync(dtmp.file_path);
-    console.log('AFTER PRINT Queue : ', queue);
   }
 
   // JOB데이터 프린터로 전송
@@ -123,4 +125,16 @@ module.exports = () => {
     });
     return client;
   }
+
+  app.listen(port, () => {
+    console.log(`Express listening on port ${port}`);
+  });
+
+  app.get('/api/hello', (req: any, res: any) => {
+    res.send({ message: 'Hello Api Test' });
+  });
+
+  app.get('/api/jobList', (req: any, res: any) => {
+    res.send({ jobList: queue });
+  });
 };
