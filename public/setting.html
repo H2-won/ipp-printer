@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:3000; script-src 'self'">
+  <title>Hp - 관리자 설정</title>
+
+</head>
+
+<body>
+
+  <div id="kr">
+    <h1>관리자 설정</h1>
+
+    <div id="setting" class="setting">
+      <h2 class="title">인터페이스</h2>
+      <div>
+        <input type="checkbox" checked='true' id="trayCheckbox" />
+        <span>트레이 아이콘 표시</span>
+      </div>
+      <h2 class="title">언어 설정</h2>
+      <div>
+        <input type="radio" name="language" id="LanguageKr" checked='true' /><span>한국어</span>
+        <input type="radio" name="language" id="LanguageEn" /><span>English</span>
+      </div>
+      <button id="saveSettingBtn">설정 저장</button>
+    </div>
+    <button id="homeBtn">메인으로</button>
+  </div>
+
+  <div id="en">
+    <h1>Admin Settings</h1>
+
+    <div id="setting" class="setting">
+      <h2 class="title">Interface</h2>
+      <div>
+        <input type="checkbox" checked='true' id="trayCheckbox" />
+        <span>Show tray icon</span>
+        <button id="saveSettingBtn">Save settings</button>
+      </div>
+    </div>
+    <button id="homeBtn">to main</button>
+  </div>
+
+  <!-- You can also require other files to run in this process -->
+  <script src="../dist/src/renderer/setting.js"></script>
+  <link rel="stylesheet" href="./style.css">
+</body>
+
+</html>
