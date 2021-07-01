@@ -1,5 +1,5 @@
+// import { ipcRenderer } from 'electron';
 const { ipcRenderer } = require('electron');
-const axios = require('axios');
 
 // notification (아이콘 있는 알림)
 const notification = {
@@ -46,5 +46,9 @@ getJobListBtn!.addEventListener('click', () => {
     .then((res) => {
       console.log('res :', res);
     });
-  // const jobList = axios.get('http://localhost:3000/api/jobList');
+});
+
+const settingBtn = document.getElementById('settingBtn');
+settingBtn!.addEventListener('click', () => {
+  ipcRenderer.send('loadSettingPage');
 });

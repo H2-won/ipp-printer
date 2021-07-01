@@ -2,7 +2,7 @@
   "name": "ipp-printer-tutorial",
   "version": "1.0.0",
   "description": "ipp-printer-tutorial with Electron/TS",
-  "main": "main.ts",
+  "main": "./dist/main.js",
   "scripts": {
     "tsc": "tsc",
     "start": "yarn run tsc && electron ./dist/main.js",

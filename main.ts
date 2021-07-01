@@ -1,8 +1,9 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow, Menu, Tray } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 const glob = require('glob');
 const path = require('path');
 const printServer = require('./src/main/printer');
+import * as Tray from './src/main/tray';
 
 let mainWindow: BrowserWindow;
 function createWindow() {
@@ -23,6 +24,14 @@ function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadFile('../public/index.html');
+
+  ipcMain.on('loadSettingPage', () => {
+    mainWindow.loadFile('../public/setting.html');
+  });
+
+  ipcMain.on('loadIndexPage', () => {
+    mainWindow.loadFile('../public/index.html');
+  });
 
   // 작업표시줄 아이콘에 작은 이미지 띄워줄때 (디스코드 빨간불 느낌)
   // mainWindow.setOverlayIcon('./huiIcon.png', 'Description for overlay');
@@ -48,7 +57,7 @@ function createWindow() {
 app.whenReady().then(() => {
   loadMainProcessFiles();
   createWindow();
-  initialTray();
+  Tray.initialTray();
   printServer();
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -61,45 +70,11 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', function () {
-  tray.destroy();
   if (process.platform !== 'darwin') app.quit();
 });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-let tray: any = null;
-function initialTray() {
-  tray = new Tray('./huiIcon.png');
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Tray Icon 숨기기',
-      // click시 tray icon 숨김
-      click: () => {
-        tray.destroy();
-      },
-    },
-    {
-      label: 'Item2',
-      click: () => {
-        console.log('Item2 clicked');
-      },
-    },
-    {
-      label: 'Item3',
-      click: () => {
-        console.log('Item3 clicked');
-      },
-    },
-    {
-      label: 'Item4',
-      click: () => {
-        console.log('Item4 clicked');
-      },
-    },
-  ]);
-  tray.setToolTip('Ipp-printer');
-  tray.setContextMenu(contextMenu);
-}
 
 // Require each jS file in the main-process dir
 function loadMainProcessFiles() {

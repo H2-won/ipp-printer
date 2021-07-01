@@ -1,4 +1,3 @@
-import { ipcMain } from 'electron';
 import { mainWindow } from '../../main';
 const fs = require('fs'),
   rc = require('rc'),

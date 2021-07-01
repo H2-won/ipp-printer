@@ -1,3 +1,53 @@
 #jobInfoContainer div span{
   margin-right: 1rem;
 }
+
+.setting .title{
+  font-size: 10px;
+  color: #ADADAD;
+  line-height: 24px;
+  letter-spacing: -0.03em;
+}
+
+.setting input{
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.setting span{
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: -0.03em;
+}
+
+.setting button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 92px;
+  height: 30px;
+  background: #4294D1;
+  border-radius: 2px;
+  border: none;
+  margin: 1rem 0;  
+
+  font-size: 12px;
+  color: white;
+}
+
+.setting button:hover{
+  background: royalblue;
+  cursor: pointer;
+}
+
+.setting div{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#en{
+  display: none;
+}
